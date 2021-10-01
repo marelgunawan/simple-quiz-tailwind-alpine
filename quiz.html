@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Simple Quiz With Tailwind & Alpine</title>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.16/tailwind.min.css">
+</head>
+<body class="bg-gray-50">
+
+      <!-- Row -->
+      <div class="flex items-center justify-center w-full h-screen">
+            <div x-data="quiz" class="w-10/12 md:w-6/12 xl:w-5/12">
+                  <!-- Card -->
+                  <div class="flex flex-col w-full overflow-hidden bg-white border border-gray-500 rounded shadow-md">
+                        <!-- Header -->
+                        <div class="flex justify-between px-3 py-2">
+                              <div @click="prevQuest" :class="activeQuest == 0 ? 'text-gray-400' : 'text-purple-400 cursor-pointer hover:text-white hover:bg-purple-400'" class="p-2 rounded-full">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 20 20" fill="currentColor">
+                                          <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                    </svg>
+                              </div>
+                              <div @click="nextQuest" :class="activeQuest == (datas.length - 1) ? 'text-gray-400' : 'text-purple-400 cursor-pointer hover:text-white hover:bg-purple-400'" class="p-2 rounded-full">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 20 20" fill="currentColor">
+                                          <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                                    </svg>
+                              </div>
+                        </div>
+                        <!-- Body -->
+                        <div class="flex flex-col p-3">
+                              <!-- Question -->
+                              <div class="flex mb-4 space-x-2">
+                                    <span x-text="activeQuest + 1" class="text-lg font-extrabold"></span>
+                                    <span x-text="datas[activeQuest].question" class="flex-1 text-lg font-extrabold text-left text-gray-900"></span>
+                              </div>
+                              <!-- Answer -->
+                              <div class="flex flex-col space-y-2">
+                                    <template x-for="(data, index) in datas[activeQuest].answer" :key="index">
+                                          <div class="inline-flex items-center p-2 space-x-2 rounded cursor-pointer hover:bg-gray-400">
+                                                <input x-model="answer" :value="index" :id="index" type="radio" name="data" class="bg-purple-400 outline-none">
+                                                <label @click="selectAnswer(index)" x-text="data" x-bind:for="index" class="block w-full text-gray-800 cursor-pointer"></label>
+                                          </div>
+                                    </template>
+                              </div>
+                        </div>
+                        <!-- Footer -->
+                        <div class="py-3 text-center text-white bg-purple-400 border-t border-gray-500 bg-purpl-400">
+                              <span @click="nextQuest" x-show="activeQuest < (datas.length - 1)" class="block font-bold tracking-wider cursor-pointer">Next</span>
+                              <span @click="submit" x-show="activeQuest == (datas.length - 1)" class="block font-bold tracking-wider cursor-pointer">Submit</span>
+                        </div>
+                  </div>
+            </div>
+      </div>
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.4.2/cdn.js" defer></script>
+      <script src="./script.js"></script>
+</body>
+</html>
